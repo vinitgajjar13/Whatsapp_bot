@@ -113,7 +113,7 @@ def send_service_details_template(phone_number, service_details):
                     "type": "body",
                     "parameters": [
                         {"type": "text", "text": service_details['title']},
-                        {"type": "text", "text": "\n- ".join(["દસ્તાવેજો:"] + service_details['documents'])}
+                        {"type": "text", "text": ", ".join(["દસ્તાવેજો:"] + service_details['documents'])}
                     ]
                 }
             ]
