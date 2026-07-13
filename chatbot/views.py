@@ -150,3 +150,25 @@ def handle_service_request(customer, phone_number, service_code):
             message_type='template'
         )
 
+def get_all_data(request):
+    customers = Customer.objects.prefetch_related('messages').all()
+    data = []
+    for customer in customers:
+        customer_data = {
+            'phone_number': customer.phone_number,
+            'name': customer.name,
+            'last_service_viewed_at': customer.last_service_viewed_at.isoformat() if customer.last_service_viewed_at else None,
+            'current_page': customer.current_page,
+            'created_at': customer.created_at.isoformat(),
+            'messages': []
+        }
+        for message in customer.messages.all().order_by('timestamp'):
+            customer_data['messages'].append({
+                'direction': message.direction,
+                'content': message.content,
+                'message_type': message.message_type,
+                'timestamp': message.timestamp.isoformat()
+            })
+        data.append(customer_data)
+        
+    return JsonResponse({'status': 'success', 'data': data})
