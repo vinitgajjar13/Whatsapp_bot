@@ -22,6 +22,7 @@ def send_template(phone_number, template_name):
     """
     Sends a generic template by name.
     """
+    lang_code = "en" if template_name in ["services_2", "services_3"] else "gu"
     payload = {
         "messaging_product": "whatsapp",
         "to": phone_number,
@@ -29,7 +30,7 @@ def send_template(phone_number, template_name):
         "template": {
             "name": template_name,
             "language": {
-                "code": "gu"
+                "code": lang_code
             }
         }
     }
