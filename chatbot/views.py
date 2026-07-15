@@ -8,7 +8,7 @@ from .models import Customer, Message
 from . import whatsapp_api
 from .services_data import SERVICES
 
-VERIFY_TOKEN = os.getenv('VERIFY_TOKEN', 'YOUR_VERIFY_TOKEN')
+VERIFY_TOKEN = os.getenv('VERIFY_TOKEN', '123')
 
 
 @csrf_exempt
