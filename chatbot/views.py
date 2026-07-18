@@ -118,6 +118,35 @@ def process_incoming_message(msg_data, contacts):
                 else:
                     whatsapp_api.send_text_message(phone_number, "Service not found. Please try again.")
 
+    elif msg_type == 'button':
+        button_title = msg_data.get('button', {}).get('text', '').strip()
+        
+        if button_title == "વધુ સેવાઓ જુઓ (More)":
+            if customer.current_page == 1:
+                customer.current_page = 2
+                customer.save()
+                whatsapp_api.send_template(phone_number, "services_2")
+            elif customer.current_page == 2:
+                customer.current_page = 3
+                customer.save()
+                whatsapp_api.send_template(phone_number, "services_3")
+            else:
+                customer.current_page = 1
+                customer.save()
+                whatsapp_api.send_template(phone_number, "welcome_services")
+        else:
+            # Find service by title
+            matched_service_code = None
+            for code, info in SERVICES.items():
+                if info['title'].strip() == button_title:
+                    matched_service_code = code
+                    break
+            
+            if matched_service_code:
+                handle_service_request(customer, phone_number, matched_service_code)
+            else:
+                whatsapp_api.send_text_message(phone_number, "Service not found. Please try again.")
+
 def handle_service_request(customer, phone_number, service_code):
     service_details = SERVICES.get(service_code)
     if not service_details:
