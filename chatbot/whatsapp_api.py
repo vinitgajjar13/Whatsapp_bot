@@ -37,7 +37,7 @@ def send_template(phone_number, template_name):
     return send_whatsapp_message(phone_number, payload)
 
 def send_welcome_template(phone_number):
-    return send_template(phone_number, "welcome_services")
+    return send_template(phone_number, "welcome_message_utility")
 
 def send_services_list(phone_number, page=1):
     """
